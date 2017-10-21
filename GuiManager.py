@@ -4,15 +4,6 @@ import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 import pyqtgraph as pg 
 
-"""
-img = np.random.uniform(0,255,(50,50))
-cv2.imshow(img)
-
-for i in list(range(10)):
-	img = np.random.uniform(0,255,(50,50))
-	cv2.imshow('image', img)
-	cv2.waitKey(0)
-"""
 
 # GUI MANAGER
 class GuiManager(QtWidgets.QWidget):
