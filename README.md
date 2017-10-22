@@ -13,3 +13,5 @@ To install Pyqt5 with Anaconda :
 
 To install pyqtgraph with Anaconda : 
 `conda install -c anaconda pyqtgraph`
+
+![John Conway and his game of Life (from Numberfile on Youtube)](https://i.ytimg.com/vi/R9Plq-D1gEk/maxresdefault.jpg)
