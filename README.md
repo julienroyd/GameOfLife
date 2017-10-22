@@ -15,4 +15,4 @@ To install pyqtgraph with Anaconda :
 `conda install -c anaconda pyqtgraph`
 
 ![John Conway and his game of Life (from Numberfile on Youtube)](https://i.ytimg.com/vi/R9Plq-D1gEk/maxresdefault.jpg)
-Image Source : [Inventing the Game of Life - Numberfile](https://www.youtube.com/watch?v=R9Plq-D1gEk)
+*Image Source : [Inventing the Game of Life - Numberfile](https://www.youtube.com/watch?v=R9Plq-D1gEk)*
