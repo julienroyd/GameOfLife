@@ -49,7 +49,7 @@ class Prototype(QtWidgets.QWidget):
         lut[:,1] = np.arange(0,256)
         self.Image.setLookupTable(lut, update=True)
 
-        # Instanciates the layout objects and initialises the first one
+        # Instanciates the layout
         self.layout = QtWidgets.QGridLayout()
         self.setLayout(self.layout)
 
