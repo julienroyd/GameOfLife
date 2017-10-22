@@ -42,11 +42,10 @@ class Prototype(QtWidgets.QWidget):
         
         self.Image.setImage(image=np.transpose(np.flip(self.BOARD, axis=0)))
 
-        # TODO : Fix Lookup tables 
-        # build lookup table
+        # Build lookup table
         lut = np.zeros((256,3), dtype=np.ubyte)
-        lut[:128,0] = np.arange(0,255,2)
-        lut[128:,0] = 255
+        lut[:10,:] = 50
+        lut[10:,0] = 255
         lut[:,1] = np.arange(0,256)
         self.Image.setLookupTable(lut, update=True)
 
