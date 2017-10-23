@@ -78,7 +78,7 @@ class GuiManager(QtWidgets.QWidget):
         self.RightBtn = QtGui.QPushButton(">")
         sizePolicyBtn.setHeightForWidth(self.RightBtn.sizePolicy().hasHeightForWidth())
         self.RightBtn.setSizePolicy(sizePolicyBtn)
-        self.RightBtn.setStyleSheet("background-color: gray; color: black; font-size: 48px; font: bold")
+        self.RightBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 48px; font: bold")
         self.RightBtn.clicked.connect(self.right)
         self.RightBtn.setEnabled(True)
 
@@ -86,7 +86,7 @@ class GuiManager(QtWidgets.QWidget):
         self.LeftBtn = QtGui.QPushButton("<")
         sizePolicyBtn.setHeightForWidth(self.LeftBtn.sizePolicy().hasHeightForWidth())
         self.LeftBtn.setSizePolicy(sizePolicyBtn)
-        self.LeftBtn.setStyleSheet("background-color: gray; color: black; font-size: 48px; font: bold")
+        self.LeftBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 48px; font: bold")
         self.LeftBtn.clicked.connect(self.left)
         self.LeftBtn.setEnabled(True)
 
@@ -94,7 +94,7 @@ class GuiManager(QtWidgets.QWidget):
         self.CreateBOARDBtn = QtGui.QPushButton("Create New")
         sizePolicyBtn.setHeightForWidth(self.CreateBOARDBtn.sizePolicy().hasHeightForWidth())
         self.CreateBOARDBtn.setSizePolicy(sizePolicyBtn)
-        self.CreateBOARDBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold")
+        self.CreateBOARDBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 32px; font: bold")
         self.CreateBOARDBtn.clicked.connect(self.createNewInitialBOARD)
         self.CreateBOARDBtn.setEnabled(True)
 
@@ -116,16 +116,16 @@ class GuiManager(QtWidgets.QWidget):
         self.layout = QtWidgets.QGridLayout()
         self.setLayout(self.layout)
 
-        self.layout.addWidget(self.Plot, 0, 0, 6, 6)    
+        self.layout.addWidget(self.Plot, 0, 0, 50, 50)    
         
-        self.layout.addWidget(self.StartBtn, 0, 6, 1, 2)
-        self.layout.addWidget(self.PauseBtn, 1, 6, 1, 2)
-        self.layout.addWidget(self.ResetBtn, 2, 6, 1, 2)
-        self.layout.addWidget(self.PlusBtn, 3, 6, 1, 2)
+        self.layout.addWidget(self.StartBtn, 5, 50, 5, 10)
+        self.layout.addWidget(self.PauseBtn, 10, 50, 5, 10)
+        self.layout.addWidget(self.PlusBtn, 15, 50, 5, 10)
+        self.layout.addWidget(self.ResetBtn, 22, 50, 5, 10)
         
-        self.layout.addWidget(self.RightBtn, 4, 7, 1, 1)
-        self.layout.addWidget(self.LeftBtn, 4, 6, 1, 1)
-        self.layout.addWidget(self.CreateBOARDBtn, 5, 6, 1, 2)
+        self.layout.addWidget(self.RightBtn, 35, 55, 5, 5)
+        self.layout.addWidget(self.LeftBtn, 35, 50, 5, 5)
+        self.layout.addWidget(self.CreateBOARDBtn, 40, 50, 5, 10)
 
         # Add Timer for displaying and saving data
         self.displayTimer = QtCore.QTimer()
