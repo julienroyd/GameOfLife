@@ -7,29 +7,8 @@ class GameOfLife(object):
 
     def __init__(self, initialBOARD=None, name=""):
 
-        if initialBOARD == None:
-
-            # Default BOARD initialization
-            self.BOARD = np.zeros(shape=(20,20), dtype=np.bool)
-            self.BOARD[[1,1,2,3,3,4,4,4,4], [2,5,6,2,6,3,4,5,6]] = True # The Lightweight Spaceship
-            self.name = "The Lightweight Spaceship"
-
-            # Saves the initial board for future reference
-            self.initialBOARD = np.copy(self.BOARD)
-        
-        elif type(initialBOARD) == np.ndarray and initialBOARD.shape == (20,20):
-
-            # User defined BOARD initialization
-            self.BOARD = initialBOARD
-            self.name = name
-
-            # Saves the initial board for future reference
-            self.initialBOARD = np.copy(self.BOARD)
-
-        else:
-
-            # initialBOARD with unrecognized type or shape
-            raise(ValueError, 'The argument "initialBOARD" provided to instanciate a "GameOfLife" should be a ndarray of shape (20, 20)')
+        self.BOARD = None
+        self.initialBOARD = None
 
 
     def takeOneStep(self):
