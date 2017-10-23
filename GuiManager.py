@@ -143,7 +143,7 @@ class GuiManager(QtWidgets.QWidget):
         self.StartBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold")
 
         # Starts the display loop
-        self.displayTimer.start(100) #Timer is set to 100 ms
+        self.displayTimer.start(50) #Timer is set to 100 ms
         return
 
     def pause(self):
