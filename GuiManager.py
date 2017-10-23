@@ -6,6 +6,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 import pyqtgraph as pg 
 
 from GameOfLife import GameOfLife
+from BOARDcreator import BOARDcreator
 
 
 # GUI MANAGER
@@ -34,7 +35,7 @@ class GuiManager(QtWidgets.QWidget):
 
         # Sets the name, incon and size of the main window
         self.setWindowTitle('The Game Of Life') 
-        self.setWindowIcon(QtGui.QIcon('Conway.jpg'))
+        self.setWindowIcon(QtGui.QIcon('Logo.PNG'))
         self.resize(1000,800)
 
         # Add Timer for displaying and saving data
@@ -58,7 +59,7 @@ class GuiManager(QtWidgets.QWidget):
         self.PauseBtn = QtGui.QPushButton("Pause")
         sizePolicyBtn.setHeightForWidth(self.PauseBtn.sizePolicy().hasHeightForWidth())
         self.PauseBtn.setSizePolicy(sizePolicyBtn)
-        self.PauseBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: black; font-size: 32px; font: bold; border-radius: 3px")
+        self.PauseBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: rgba(150,150,150,250); font-size: 32px; font: bold; border-radius: 3px")
         self.PauseBtn.clicked.connect(self.pause)
         self.PauseBtn.setEnabled(False)
 
@@ -150,11 +151,11 @@ class GuiManager(QtWidgets.QWidget):
         self.PauseBtn.setStyleSheet("background-color: red; color: black; font-size: 32px; font: bold; border-radius: 3px")
 
         self.StartBtn.setEnabled(False)
-        self.StartBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: black; font-size: 32px; font: bold; border-radius: 3px")
+        self.StartBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: rgba(150,150,150,250); font-size: 32px; font: bold; border-radius: 3px")
 
         # Disables the PLUS button
         self.PlusBtn.setEnabled(False)
-        self.PlusBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: black; font-size: 48px; font: bold; border-radius: 3px")
+        self.PlusBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: rgba(150,150,150,250); font-size: 48px; font: bold; border-radius: 3px")
 
         # Enable the slider
         self.slider.setEnabled(True)
@@ -169,7 +170,7 @@ class GuiManager(QtWidgets.QWidget):
         self.StartBtn.setStyleSheet("background-color: green; color: black; font-size: 32px; font: bold; border-radius: 5px")
 
         self.PauseBtn.setEnabled(False)
-        self.PauseBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: black; font-size: 32px; font: bold; border-radius: 5px")
+        self.PauseBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: rgba(150,150,150,250); font-size: 32px; font: bold; border-radius: 5px")
 
         # Enables the PLUS button
         self.PlusBtn.setEnabled(True)
@@ -237,7 +238,7 @@ class GuiManager(QtWidgets.QWidget):
         return
 
     def createNewInitialBOARD(self):
-        # TODO
+        creationWindow = BOARDcreator()
         return
 
     def loadInitialBOARD(self):
@@ -261,12 +262,10 @@ class GuiManager(QtWidgets.QWidget):
 
 
 
-def run():
+
+# If we run the file directly
+if __name__ == '__main__':
     global app
     app = QtWidgets.QApplication(sys.argv)  # Every PyQt application must create an application object
     gui = GuiManager()                      # Create an object "GuiManager"
     sys.exit(app.exec_())                   # Enter the main loop of the application
-
-
-if __name__ == '__main__':
-    run()
