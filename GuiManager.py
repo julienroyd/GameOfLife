@@ -46,7 +46,7 @@ class GuiManager(QtWidgets.QWidget):
         self.StartBtn = QtGui.QPushButton("Start")
         sizePolicyBtn.setHeightForWidth(self.StartBtn.sizePolicy().hasHeightForWidth())
         self.StartBtn.setSizePolicy(sizePolicyBtn)
-        self.StartBtn.setStyleSheet("background-color: green; color: black; font-size: 32px; font: bold")
+        self.StartBtn.setStyleSheet("background-color: green; color: black; font-size: 32px; font: bold; border-radius: 3px")
         self.StartBtn.clicked.connect(self.start)
         self.StartBtn.setEnabled(True)
 
@@ -54,7 +54,7 @@ class GuiManager(QtWidgets.QWidget):
         self.PauseBtn = QtGui.QPushButton("Pause")
         sizePolicyBtn.setHeightForWidth(self.PauseBtn.sizePolicy().hasHeightForWidth())
         self.PauseBtn.setSizePolicy(sizePolicyBtn)
-        self.PauseBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold")
+        self.PauseBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold; border-radius: 3px")
         self.PauseBtn.clicked.connect(self.pause)
         self.PauseBtn.setEnabled(False)
         
@@ -62,7 +62,7 @@ class GuiManager(QtWidgets.QWidget):
         self.ResetBtn = QtGui.QPushButton("Reset")
         sizePolicyBtn.setHeightForWidth(self.ResetBtn.sizePolicy().hasHeightForWidth())
         self.ResetBtn.setSizePolicy(sizePolicyBtn)
-        self.ResetBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold")
+        self.ResetBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold; border-radius: 3px")
         self.ResetBtn.clicked.connect(self.reset)
         self.ResetBtn.setEnabled(True)
 
@@ -70,23 +70,23 @@ class GuiManager(QtWidgets.QWidget):
         self.PlusBtn = QtGui.QPushButton("+")
         sizePolicyBtn.setHeightForWidth(self.PlusBtn.sizePolicy().hasHeightForWidth())
         self.PlusBtn.setSizePolicy(sizePolicyBtn)
-        self.PlusBtn.setStyleSheet("background-color: gray; color: black; font-size: 48px; font: bold")
+        self.PlusBtn.setStyleSheet("background-color: gray; color: black; font-size: 48px; font: bold; border-radius: 3px")
         self.PlusBtn.clicked.connect(self.plusOne)
         self.PlusBtn.setEnabled(True)
 
         # RIGHT button
-        self.RightBtn = QtGui.QPushButton(">")
+        self.RightBtn = QtGui.QPushButton("->")
         sizePolicyBtn.setHeightForWidth(self.RightBtn.sizePolicy().hasHeightForWidth())
         self.RightBtn.setSizePolicy(sizePolicyBtn)
-        self.RightBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 48px; font: bold")
+        self.RightBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 48px; font: bold; border-radius: 3px")
         self.RightBtn.clicked.connect(self.right)
         self.RightBtn.setEnabled(True)
 
         # LEFT button
-        self.LeftBtn = QtGui.QPushButton("<")
+        self.LeftBtn = QtGui.QPushButton("<-")
         sizePolicyBtn.setHeightForWidth(self.LeftBtn.sizePolicy().hasHeightForWidth())
         self.LeftBtn.setSizePolicy(sizePolicyBtn)
-        self.LeftBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 48px; font: bold")
+        self.LeftBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 48px; font: bold; border-radius: 3px")
         self.LeftBtn.clicked.connect(self.left)
         self.LeftBtn.setEnabled(True)
 
@@ -94,7 +94,7 @@ class GuiManager(QtWidgets.QWidget):
         self.CreateBOARDBtn = QtGui.QPushButton("Create New")
         sizePolicyBtn.setHeightForWidth(self.CreateBOARDBtn.sizePolicy().hasHeightForWidth())
         self.CreateBOARDBtn.setSizePolicy(sizePolicyBtn)
-        self.CreateBOARDBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 32px; font: bold")
+        self.CreateBOARDBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 32px; font: bold; border-radius: 3px")
         self.CreateBOARDBtn.clicked.connect(self.createNewInitialBOARD)
         self.CreateBOARDBtn.setEnabled(True)
 
@@ -137,10 +137,10 @@ class GuiManager(QtWidgets.QWidget):
     def start(self):
         # Disable Start-Button and enable Pause-Button
         self.PauseBtn.setEnabled(True)
-        self.PauseBtn.setStyleSheet("background-color: red; color: black; font-size: 32px; font: bold")
+        self.PauseBtn.setStyleSheet("background-color: red; color: black; font-size: 32px; font: bold; border-radius: 3px")
 
         self.StartBtn.setEnabled(False)
-        self.StartBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold")
+        self.StartBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold; border-radius: 3px")
 
         # Starts the display loop
         self.displayTimer.start(50) #Timer is set to 100 ms
@@ -149,10 +149,10 @@ class GuiManager(QtWidgets.QWidget):
     def pause(self):
         # Disable Pause-Button and enable Start-Button
         self.StartBtn.setEnabled(True)
-        self.StartBtn.setStyleSheet("background-color: green; color: black; font-size: 32px; font: bold")
+        self.StartBtn.setStyleSheet("background-color: green; color: black; font-size: 32px; font: bold; border-radius: 5px")
 
         self.PauseBtn.setEnabled(False)
-        self.PauseBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold")
+        self.PauseBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold; border-radius: 5px")
 
         # Stops the display loop
         self.displayTimer.stop()
