@@ -6,6 +6,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 import pyqtgraph as pg 
 
 from GameOfLife import GameOfLife
+from BOARDcreator import BOARDcreator
 
 
 # GUI MANAGER
@@ -34,8 +35,12 @@ class GuiManager(QtWidgets.QWidget):
 
         # Sets the name, incon and size of the main window
         self.setWindowTitle('The Game Of Life') 
-        self.setWindowIcon(QtGui.QIcon('Conway.jpg'))
+        self.setWindowIcon(QtGui.QIcon('Logo.PNG'))
         self.resize(1000,800)
+
+        # Add Timer for displaying and saving data
+        self.displayTimer = QtCore.QTimer()
+        self.displayTimer.timeout.connect(self.propagate)
 
         # Creates the buttons' size policy
         sizePolicyBtn = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Minimum)
@@ -46,7 +51,7 @@ class GuiManager(QtWidgets.QWidget):
         self.StartBtn = QtGui.QPushButton("Start")
         sizePolicyBtn.setHeightForWidth(self.StartBtn.sizePolicy().hasHeightForWidth())
         self.StartBtn.setSizePolicy(sizePolicyBtn)
-        self.StartBtn.setStyleSheet("background-color: green; color: black; font-size: 32px; font: bold")
+        self.StartBtn.setStyleSheet("background-color: green; color: black; font-size: 32px; font: bold; border-radius: 3px")
         self.StartBtn.clicked.connect(self.start)
         self.StartBtn.setEnabled(True)
 
@@ -54,39 +59,47 @@ class GuiManager(QtWidgets.QWidget):
         self.PauseBtn = QtGui.QPushButton("Pause")
         sizePolicyBtn.setHeightForWidth(self.PauseBtn.sizePolicy().hasHeightForWidth())
         self.PauseBtn.setSizePolicy(sizePolicyBtn)
-        self.PauseBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold")
+        self.PauseBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: rgba(150,150,150,250); font-size: 32px; font: bold; border-radius: 3px")
         self.PauseBtn.clicked.connect(self.pause)
         self.PauseBtn.setEnabled(False)
-        
-        # Reset button
-        self.ResetBtn = QtGui.QPushButton("Reset")
-        sizePolicyBtn.setHeightForWidth(self.ResetBtn.sizePolicy().hasHeightForWidth())
-        self.ResetBtn.setSizePolicy(sizePolicyBtn)
-        self.ResetBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold")
-        self.ResetBtn.clicked.connect(self.reset)
-        self.ResetBtn.setEnabled(True)
 
         # PLUS button
         self.PlusBtn = QtGui.QPushButton("+")
         sizePolicyBtn.setHeightForWidth(self.PlusBtn.sizePolicy().hasHeightForWidth())
         self.PlusBtn.setSizePolicy(sizePolicyBtn)
-        self.PlusBtn.setStyleSheet("background-color: gray; color: black; font-size: 48px; font: bold")
+        self.PlusBtn.setStyleSheet("background-color: gray; color: black; font-size: 48px; font: bold; border-radius: 3px")
         self.PlusBtn.clicked.connect(self.plusOne)
         self.PlusBtn.setEnabled(True)
 
+        # Reset button
+        self.ResetBtn = QtGui.QPushButton("Reset")
+        sizePolicyBtn.setHeightForWidth(self.ResetBtn.sizePolicy().hasHeightForWidth())
+        self.ResetBtn.setSizePolicy(sizePolicyBtn)
+        self.ResetBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold; border-radius: 3px")
+        self.ResetBtn.clicked.connect(self.reset)
+        self.ResetBtn.setEnabled(True)
+
+        # Slider for propagation speed
+        self.slider = QtWidgets.QSlider(QtCore.Qt.Horizontal, self)
+        self.slider.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.slider.setRange(1, 100)
+        self.slider.setValue(10)
+        self.slider.valueChanged[int].connect(self.changePropagationSpeed)
+        self.slider.setEnabled(False)
+
         # RIGHT button
-        self.RightBtn = QtGui.QPushButton(">")
+        self.RightBtn = QtGui.QPushButton("->")
         sizePolicyBtn.setHeightForWidth(self.RightBtn.sizePolicy().hasHeightForWidth())
         self.RightBtn.setSizePolicy(sizePolicyBtn)
-        self.RightBtn.setStyleSheet("background-color: gray; color: black; font-size: 48px; font: bold")
+        self.RightBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 48px; font: bold; border-radius: 3px")
         self.RightBtn.clicked.connect(self.right)
         self.RightBtn.setEnabled(True)
 
         # LEFT button
-        self.LeftBtn = QtGui.QPushButton("<")
+        self.LeftBtn = QtGui.QPushButton("<-")
         sizePolicyBtn.setHeightForWidth(self.LeftBtn.sizePolicy().hasHeightForWidth())
         self.LeftBtn.setSizePolicy(sizePolicyBtn)
-        self.LeftBtn.setStyleSheet("background-color: gray; color: black; font-size: 48px; font: bold")
+        self.LeftBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 48px; font: bold; border-radius: 3px")
         self.LeftBtn.clicked.connect(self.left)
         self.LeftBtn.setEnabled(True)
 
@@ -94,7 +107,7 @@ class GuiManager(QtWidgets.QWidget):
         self.CreateBOARDBtn = QtGui.QPushButton("Create New")
         sizePolicyBtn.setHeightForWidth(self.CreateBOARDBtn.sizePolicy().hasHeightForWidth())
         self.CreateBOARDBtn.setSizePolicy(sizePolicyBtn)
-        self.CreateBOARDBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold")
+        self.CreateBOARDBtn.setStyleSheet("background-color: rgba(40,97,130,250); color: black; font-size: 32px; font: bold; border-radius: 3px")
         self.CreateBOARDBtn.clicked.connect(self.createNewInitialBOARD)
         self.CreateBOARDBtn.setEnabled(True)
 
@@ -116,20 +129,18 @@ class GuiManager(QtWidgets.QWidget):
         self.layout = QtWidgets.QGridLayout()
         self.setLayout(self.layout)
 
-        self.layout.addWidget(self.Plot, 0, 0, 6, 6)    
+        self.layout.addWidget(self.Plot, 0, 0, 50, 50)    
         
-        self.layout.addWidget(self.StartBtn, 0, 6, 1, 2)
-        self.layout.addWidget(self.PauseBtn, 1, 6, 1, 2)
-        self.layout.addWidget(self.ResetBtn, 2, 6, 1, 2)
-        self.layout.addWidget(self.PlusBtn, 3, 6, 1, 2)
+        self.layout.addWidget(self.StartBtn, 5, 50, 5, 10)
+        self.layout.addWidget(self.PauseBtn, 10, 50, 5, 10)
+        self.layout.addWidget(self.PlusBtn, 15, 50, 5, 10)
         
-        self.layout.addWidget(self.RightBtn, 4, 7, 1, 1)
-        self.layout.addWidget(self.LeftBtn, 4, 6, 1, 1)
-        self.layout.addWidget(self.CreateBOARDBtn, 5, 6, 1, 2)
-
-        # Add Timer for displaying and saving data
-        self.displayTimer = QtCore.QTimer()
-        self.displayTimer.timeout.connect(self.propagate)
+        self.layout.addWidget(self.slider, 22, 50, 2, 10)
+        self.layout.addWidget(self.ResetBtn, 25, 50, 5, 10)
+        
+        self.layout.addWidget(self.RightBtn, 35, 55, 5, 5)
+        self.layout.addWidget(self.LeftBtn, 35, 50, 5, 5)
+        self.layout.addWidget(self.CreateBOARDBtn, 40, 50, 5, 10)
 
         # Display the interface on the screen
         self.show()
@@ -137,22 +148,36 @@ class GuiManager(QtWidgets.QWidget):
     def start(self):
         # Disable Start-Button and enable Pause-Button
         self.PauseBtn.setEnabled(True)
-        self.PauseBtn.setStyleSheet("background-color: red; color: black; font-size: 32px; font: bold")
+        self.PauseBtn.setStyleSheet("background-color: red; color: black; font-size: 32px; font: bold; border-radius: 3px")
 
         self.StartBtn.setEnabled(False)
-        self.StartBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold")
+        self.StartBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: rgba(150,150,150,250); font-size: 32px; font: bold; border-radius: 3px")
+
+        # Disables the PLUS button
+        self.PlusBtn.setEnabled(False)
+        self.PlusBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: rgba(150,150,150,250); font-size: 48px; font: bold; border-radius: 3px")
+
+        # Enable the slider
+        self.slider.setEnabled(True)
 
         # Starts the display loop
-        self.displayTimer.start(50) #Timer is set to 100 ms
+        self.displayTimer.start((1. / self.slider.value()) * 1e3)
         return
 
     def pause(self):
         # Disable Pause-Button and enable Start-Button
         self.StartBtn.setEnabled(True)
-        self.StartBtn.setStyleSheet("background-color: green; color: black; font-size: 32px; font: bold")
+        self.StartBtn.setStyleSheet("background-color: green; color: black; font-size: 32px; font: bold; border-radius: 5px")
 
         self.PauseBtn.setEnabled(False)
-        self.PauseBtn.setStyleSheet("background-color: gray; color: black; font-size: 32px; font: bold")
+        self.PauseBtn.setStyleSheet("background-color: rgba(200,200,200,250); color: rgba(150,150,150,250); font-size: 32px; font: bold; border-radius: 5px")
+
+        # Enables the PLUS button
+        self.PlusBtn.setEnabled(True)
+        self.PlusBtn.setStyleSheet("background-color: gray; color: black; font-size: 48px; font: bold; border-radius: 3px")
+
+        # Disable the slider
+        self.slider.setEnabled(False)
 
         # Stops the display loop
         self.displayTimer.stop()
@@ -188,6 +213,11 @@ class GuiManager(QtWidgets.QWidget):
         self.Image.setImage(image=np.transpose(np.flip(self.game.BOARD, axis=0)))
         return
 
+    def changePropagationSpeed(self, value):
+        # The value corresponds to the number of steps per second
+        freq = (1. / value) * 1e3 # Frequency in ms
+        self.displayTimer.start(freq)
+
     def right(self):
         # Sets the initial BOARD to next in the list
         self.currentInitialBOARD += 1
@@ -208,7 +238,7 @@ class GuiManager(QtWidgets.QWidget):
         return
 
     def createNewInitialBOARD(self):
-        # TODO
+        creationWindow = BOARDcreator()
         return
 
     def loadInitialBOARD(self):
@@ -232,12 +262,10 @@ class GuiManager(QtWidgets.QWidget):
 
 
 
-def run():
+
+# If we run the file directly
+if __name__ == '__main__':
     global app
     app = QtWidgets.QApplication(sys.argv)  # Every PyQt application must create an application object
     gui = GuiManager()                      # Create an object "GuiManager"
     sys.exit(app.exec_())                   # Enter the main loop of the application
-
-
-if __name__ == '__main__':
-    run()
