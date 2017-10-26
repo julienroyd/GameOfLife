@@ -6,7 +6,6 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 import pyqtgraph as pg 
 
 from GameOfLife import GameOfLife
-from BOARDcreator import BOARDcreator
 
 
 """
@@ -300,6 +299,10 @@ class GuiManager(QtWidgets.QWidget):
         self.loadInitialBOARD()
         self.reset()
         self.checkAllowedSizes()
+
+        # Resets the zooming on the image
+        self.Plot.autoRange()
+        self.Plot.enableAutoRange()
         return
 
     def left(self):
@@ -311,6 +314,10 @@ class GuiManager(QtWidgets.QWidget):
         self.loadInitialBOARD()
         self.reset()
         self.checkAllowedSizes()
+        
+        # Resets the zooming on the image
+        self.Plot.autoRange()
+        self.Plot.enableAutoRange()
         return
 
     def createNewInitialBOARD(self):
