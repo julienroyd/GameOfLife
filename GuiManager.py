@@ -280,7 +280,7 @@ class GuiManager(QtWidgets.QWidget):
 
     def updatePlot(self):
         # Updates the plot with the current state of the game
-        self.Image.setImage(image=np.transpose(np.flip(self.game.BOARD, axis=0)))
+        self.Image.setImage(image=np.transpose(np.flip(self.game.BOARD.astype(np.uint8), axis=0)))
         return
 
     def changePropagationSpeed(self, value):
@@ -331,7 +331,7 @@ class GuiManager(QtWidgets.QWidget):
         
         # Updates the initial BOARD and its name in the game object
         self.game.initialBOARD = np.copy(array)
-        self.game.BOARD = np.copy(self.game.initialBOARD)
+        self.game.BOARD = np.copy(self.game.initialBOARD.astype(np.uint8))
         self.updatePlot()
         self.Plot.setTitle(title="The "+self.initialBOARDs[self.currentInitialBOARD].split('.')[0])
         self.resetSize()
@@ -365,7 +365,7 @@ class GuiManager(QtWidgets.QWidget):
             self.currentSize += 1
             self.checkAllowedSizes()
             self.enlargeImage()
-            self.Image.setImage(image=np.transpose(np.flip(self.game.BOARD, axis=0)))
+            self.Image.setImage(image=np.transpose(np.flip(self.game.BOARD.astype(np.uint8), axis=0)))
 
 
     def decrease(self):
@@ -373,11 +373,11 @@ class GuiManager(QtWidgets.QWidget):
             self.currentSize -= 1
             self.checkAllowedSizes()
             self.diminishImage()
-            self.Image.setImage(image=np.transpose(np.flip(self.game.BOARD, axis=0)))
+            self.Image.setImage(image=np.transpose(np.flip(self.game.BOARD.astype(np.uint8), axis=0)))
 
 
     def enlargeImage(self):
-        biggerImage = np.zeros(shape=(self.listOfSizes[self.currentSize], self.listOfSizes[self.currentSize]), dtype=np.bool)
+        biggerImage = np.zeros(shape=(self.listOfSizes[self.currentSize], self.listOfSizes[self.currentSize]), dtype=np.uint8)
         biggerImage[:self.game.BOARD.shape[0],:self.game.BOARD.shape[1]] = self.game.BOARD
         self.game.BOARD = biggerImage
 
@@ -456,7 +456,7 @@ class GuiManager(QtWidgets.QWidget):
 
     def createNew(self):
         self.pause()
-        self.game.BOARD = np.zeros(shape=(self.listOfSizes[self.currentSize], self.listOfSizes[self.currentSize]), dtype=np.bool)
+        self.game.BOARD = np.zeros(shape=(self.listOfSizes[self.currentSize], self.listOfSizes[self.currentSize]), dtype=np.uint8)
         self.updatePlot()
         self.Plot.setTitle(title="NEW BOARD (still unamed)")
         return

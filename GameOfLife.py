@@ -37,6 +37,6 @@ class GameOfLife(object):
         NewBOARD = Newborns + Survivors
 
         # Update the BOARD attribute
-        self.BOARD = NewBOARD
+        self.BOARD = NewBOARD.astype(np.uint8)
         
         return
