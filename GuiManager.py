@@ -6,6 +6,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 import pyqtgraph as pg 
 
 from GameOfLife import GameOfLife
+from SoudManager import SoundManager
 
 
 """
@@ -40,6 +41,9 @@ class GuiManager(QtWidgets.QWidget):
 
         # Load the initial BOARD and update it in the game object
         self.loadInitialBOARD()
+
+        # Load the sounds to be played as the Life spreads!
+        self.sound_manager = SoundManager(sound_dir=os.path.join('assets', 'notes'))
     
     # WIDGETS AND LAYOUT ----------------------------------------------------------------------------------------------
     def setupGUI(self):
@@ -273,8 +277,11 @@ class GuiManager(QtWidgets.QWidget):
 
     def propagate(self):
         # Updates the plot to the next iteration result
+        current_image = np.copy(self.game.BOARD)
         self.game.takeOneStep()
         self.updatePlot()
+        new_image = np.copy(self.game.BOARD)
+        self.playSounds(new_image - current_image)
         return
 
 
@@ -282,6 +289,19 @@ class GuiManager(QtWidgets.QWidget):
         # Updates the plot with the current state of the game
         self.Image.setImage(image=np.transpose(np.flip(self.game.BOARD.astype(np.uint8), axis=0)))
         return
+
+    def playSounds(self, difference):
+        # Here we define the rule that maps the GameOfLife BOARD to notes
+        # For now, I just look at the new pixels that appeared during the current propagation
+        # I sum the X components of the new pixels, which give me a number
+        # I sum the Y components of the new pixels, which give me another number
+        # I play the two notes corresponding to the modulo of those two numbers (bref.. n'importe quoi lol)
+        new_pixels_pos = np.array(np.where(difference == 255)).T
+        two_notes = np.sum(new_pixels_pos, axis=0)
+        if sum(two_notes) != 0:
+            for note in two_notes:
+                note_value = note % self.sound_manager.n_sounds
+                self.sound_manager.play_sound(note_value)
 
     def changePropagationSpeed(self, value):
         # The value corresponds to the number of steps per second
@@ -359,14 +379,12 @@ class GuiManager(QtWidgets.QWidget):
 
         self.updatePlot()
 
-
     def increase(self):
         if self.currentSize < len(self.listOfSizes) - 1:
             self.currentSize += 1
             self.checkAllowedSizes()
             self.enlargeImage()
             self.Image.setImage(image=np.transpose(np.flip(self.game.BOARD.astype(np.uint8), axis=0)))
-
 
     def decrease(self):
         if self.currentSize > 0:
@@ -375,17 +393,14 @@ class GuiManager(QtWidgets.QWidget):
             self.diminishImage()
             self.Image.setImage(image=np.transpose(np.flip(self.game.BOARD.astype(np.uint8), axis=0)))
 
-
     def enlargeImage(self):
         biggerImage = np.zeros(shape=(self.listOfSizes[self.currentSize], self.listOfSizes[self.currentSize]), dtype=np.uint8)
         biggerImage[:self.game.BOARD.shape[0],:self.game.BOARD.shape[1]] = self.game.BOARD
         self.game.BOARD = biggerImage
 
-
     def diminishImage(self):
         smallerImage = self.game.BOARD[:self.listOfSizes[self.currentSize], :self.listOfSizes[self.currentSize]]
         self.game.BOARD = smallerImage
-
 
     def resetSize(self):
         if self.game.BOARD.shape[0] in self.listOfSizes:
@@ -437,8 +452,6 @@ class GuiManager(QtWidgets.QWidget):
                 self.currentInitialBOARD = self.initialBOARDs.index(text.replace(" ", "") + ".npy")
                 self.loadInitialBOARD()
 
-
-
     def delete(self):
         # Shows a pop-up asking for confirmation
         message = 'Are you sure you want to delete initial BOARD "The {0}"?'.format(self.initialBOARDs[self.currentInitialBOARD].split('.')[0])
@@ -453,15 +466,12 @@ class GuiManager(QtWidgets.QWidget):
             self.loadInitialBOARD()
         return
 
-
     def createNew(self):
         self.pause()
         self.game.BOARD = np.zeros(shape=(self.listOfSizes[self.currentSize], self.listOfSizes[self.currentSize]), dtype=np.uint8)
         self.updatePlot()
         self.Plot.setTitle(title="NEW BOARD (still unamed)")
         return
-
-
 
 
 # If we run the file directly
