@@ -4,15 +4,9 @@ John Conway's Game of Life
 After watching this [great video](https://www.youtube.com/watch?v=E8kUJL04ELA) from Numberfile on Youtube, I decided to try and implement this fun experiment.
 
 ### Requirements
-* Anaconda3 (I run Python 3.6.1)
-* PyQt5
-* pyqtgraph
 
-To install Pyqt5 with Anaconda : 
-`conda install -c dsdale24 pyqt5` 
-
-To install pyqtgraph with Anaconda : 
-`conda install -c anaconda pyqtgraph`
+* `conda create --name gameoflife_env python=3.7.4` 
+* `pip install requirements.txt`
 
 ### The project
 This project is meant to be a simple implementation of Conway's Game of Life, wrapped into a GUI in order to allow the user to play around and have fun exploring different board configurations.
